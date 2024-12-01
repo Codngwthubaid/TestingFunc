@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Google Map Clone</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css"
+        type="text/css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            ;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+<script>
+    navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {
+        enableHighAccuracy: true
+    })
+
+    function successLocation(position) {
+        console.log(position);
+        setUpMap(position.coords.longitude, position.coords.latitude)
+    }
+
+    function errorLocation() {
+        setUpMap([78.9629, 20.5937])
+    }
+
+    function setUpMap(center) {
+        mapboxgl.accessToken = 'pk.eyJ1IjoibHVsbGFob29ubWFpbiIsImEiOiJjbTI1Z29temcwOG9nMmlzNnI2ZXliemEwIn0.QfWCthiJyT_Kor6epHkzeQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            zoom: 1.8,
+            center: center
+        });
+
+        const directions = new MapboxDirections({
+            accessToken: mapboxgl.accessToken
+        });
+        map.addControl(directions, "top-left")
+        const nav = new mapboxgl.NavigationControl()
+        map.addControl(nav, "top-right")
+    }
+
+    setUpMap()
+
+
+</script>
+
+</html>

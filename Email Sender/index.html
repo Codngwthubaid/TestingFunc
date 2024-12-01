@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+   
+</head>
+<body>
+    <form class="contactform">
+        <label for="Name">Name:</label>
+        <input type="text" id="Name" name="Name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+        <br>
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        const form = document.querySelector(".contactform");
+        const Name = document.getElementById("Name");
+        const email = document.getElementById("email");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            console.log("Form submitted successfully.");
+
+            let formData = {
+                Name: Name.value,
+                email: email.value,
+                message: message.value
+            };
+
+            console.log(formData);
+
+            try {
+                let response = await fetch("/", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                let result = await response.text();
+                console.log(result);
+                if (result == "success") {
+                    alert("Message Sent!!!");
+                    Name.value = "";
+                    email.value = "";
+                    message.value = "";
+                } else {
+                    alert("Something went wrong");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong");
+            }
+        });
+    </script>
+</body>
+</html>
