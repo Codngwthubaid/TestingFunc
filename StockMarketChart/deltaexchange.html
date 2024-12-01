@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delta Exchange Option Chain</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Option Chain Data from Delta Exchange</h1>
+    <table id="option-chain">
+        <thead>
+            <tr>
+                <th>Strike Price</th>
+                <th>Call Price</th>
+                <th>Put Price</th>
+                <th>Expiration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Option chain data will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchOptionChain() {
+            try {
+                const response = await fetch('https://api.delta.exchange/v2/options'); // Replace with actual endpoint
+                const data = await response.json();
+
+                const tableBody = document.getElementById('option-chain').getElementsByTagName('tbody')[0];
+
+                data.options.forEach(option => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerText = option.strike_price; // Adjust according to actual data structure
+                    row.insertCell(1).innerText = option.call_price;   // Adjust according to actual data structure
+                    row.insertCell(2).innerText = option.put_price;    // Adjust according to actual data structure
+                    row.insertCell(3).innerText = option.expiration_date; // Adjust according to actual data structure
+                });
+            } catch (error) {
+                console.error('Error fetching option chain data:', error);
+            }
+        }
+
+        // Call the function to fetch data
+        fetchOptionChain();
+    </script>
+</body>
+
+</html>
